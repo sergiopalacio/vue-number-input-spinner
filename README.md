@@ -1,5 +1,6 @@
 # vue-number-input-spinner
 A customizable number input spinner component for Vuejs
+This is a mantained fork of krystalcampioni/vue-number-input-spinner
 
 ## Demo
 [https://sergiopalacio.github.io/vue-number-input-spinner/](https://sergiopalacio.github.io/vue-number-input-spinner/)
@@ -24,7 +25,7 @@ export default {
 
 #### Usage example:
 ```html
-<NumberInputSpinner
+<number-input-spinner
   :min="0"
   :max="10"
   :step="2"
