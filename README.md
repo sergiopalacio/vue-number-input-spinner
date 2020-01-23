@@ -9,7 +9,11 @@ This is a mantained fork of krystalcampioni/vue-number-input-spinner
 
 * Install the package via NPM:
 
-* `npm install vue-number-input-spinner`
+* `npm install @sergiopalacio/vue-number-input-spinner`
+
+* Or use yarn:
+
+* `yarn add @sergiopalacio/vue-number-input-spinner`
 
 * Load it in your project:
 
