@@ -1,58 +1,51 @@
-const webpack = require('webpack')
-const config = require('./webpack.base.conf')
-const ExtractTextPlugin = require('extract-text-webpack-plugin')
-const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
-const path = require('path')
+const webpack = require('webpack');
+const config = require('./webpack.base.conf');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
+const path = require('path');
+const TerserPlugin = require('terser-webpack-plugin');
 
-config.output.filename = 'vue-number-input-spinner.min.js'
-config.output.libraryTarget = 'umd'
-config.output.library = 'NumberInputSpinner'
 
-config.entry = path.resolve(__dirname, '../src/components/NumberInputSpinner.vue')
+config.mode = 'production';
+config.output.filename = 'vue-number-input-spinner.min.js';
+config.output.libraryTarget = 'umd';
+config.output.library = 'NumberInputSpinner';
+config.optimization = {
+  minimize: true,
+  minimizer: [new TerserPlugin()],
+};
 
-config.devtool = '#source-map'
+config.entry = path.resolve(__dirname, '../src/components/NumberInputSpinner.vue');
+
+config.devtool = '#source-map';
 
 config.module.rules.push({
   test: /\.css$/,
-  use: ExtractTextPlugin.extract({
-    fallback: "style-loader",
-    use: "css-loader",
-  }),
-})
+  use: [
+    {
+      loader: MiniCssExtractPlugin.loader,
+      options: {
+        mode: 'production',
+        // you can specify a publicPath here
+        // by default it uses publicPath in webpackOptions.output
+        hmr: process.env.NODE_ENV === 'development',
+      },
+    },
+    'css-loader',
+  ]
+});
 
 config.plugins = (config.plugins || []).concat([
   new webpack.DefinePlugin({
     'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
   }),
 
-  new ExtractTextPlugin({
+  new MiniCssExtractPlugin({
     filename: 'vue-number-input-spinner.min.css',
-  }),
-
-  new UglifyJSPlugin({
-    sourceMap: true,
-
-    compress: {
-      warnings: false,
-      drop_debugger: true,
-      drop_console: true,
-      screw_ie8: true,
-      global_defs: {
-        'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
-      },
-    },
-
-    mangle: {
-      screw_ie8: true,
-    },
-
-    output: {
-      comments: false,
-      screw_ie8: true,
-    }
+    chunkFilename: 'test-chunk.css'
   }),
 
   new webpack.optimize.OccurrenceOrderPlugin(),
-])
+]);
 
-module.exports = config
+module.exports = config;
